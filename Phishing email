@@ -1,0 +1,20 @@
+#physhing mail
+
+phishingemail = ["Jackpotwin@lottery.com", "claimtheprize@mymoney.com", "youarethewinner@lottery.com", 
+                 "luckywinner@snapdeal.com", "youarelucky@mymoney.com", "luckywinner@mymoney.com", 
+                 "spinthewheel@flipkart.com", "dealwinner@snapdeal.com", "claimtheprize@americaniottery.com"]
+
+d = {}
+
+for e in phishingemail:
+    words = e.split("@")
+    for w in words:
+        if w not in d:
+            d[w] = 1
+        else:
+            d[w] += 1
+
+print(d)
+
+key = max(d, key=d.get)
+print("Most common occurring word is:", key)
