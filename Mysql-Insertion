@@ -1,0 +1,45 @@
+
+```
+import mysql.connector as mycon
+
+con = mycon.connect(host='localhost', user='root', password="sobha", database="emp")
+
+if con.is_connected == False:
+    print("Not connected")
+else:
+    print("Connected to DB")
+
+ans = 'y'
+cur = con.cursor()
+
+while ans == 'y':
+    print('1. Add Record')
+    print('2. Display Record')
+    print('0. Exit')
+    
+    ch = int(input("Enter your choice: "))
+
+    if ch == 1:
+        no = int(input("Enter emp no: "))
+        name = input("Enter name: ")
+        salary = int(input("Enter salary: "))
+        
+        query = "insert into employ values({}, '{}', {})".format(no, name, salary)
+        cur.execute(query)
+        con.commit()
+        print('## Data Saved ##')
+
+    elif ch == 2:
+        query = "select * from employ"
+        cur.execute(query)
+        result = cur.fetchall()
+        
+        print("%10s" % "EmpNo", "%20s" % "Emp Name", "%10s" % "Salary")
+        print('----------------------------')
+        
+        for row in result:
+            print("%10s" % row[0], "%20s" % row[1], "%10s" % row[2])
+
+    elif ch == 0:
+        con.close()
+        break
