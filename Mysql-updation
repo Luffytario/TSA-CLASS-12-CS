@@ -1,0 +1,51 @@
+import mysql.connector as mycon
+
+con = mycon.connect(host='localhost', user='root', password="sobha", database="emp")
+
+if con.is_connected == False:
+    print("Not connected")
+else:
+    print("Connected to DB")
+
+ans = 'y'
+cur = con.cursor()
+
+while ans == 'y':
+    print('1. Update Record')
+    print('2. Display Record')
+    print('0. Exit')
+    
+    ch = int(input("Enter your choice: "))
+
+    if ch == 1:
+        no = int(input("Enter emp no: "))
+        query = "select * from employ where eno={}".format(no)
+        cur.execute(query)
+        result = cur.fetchall()
+        
+        if cur.rowcount == 0:
+            print("Record not found")
+        else:
+            row = result[0]
+            sal = input("Enter new salary to update: ")
+            if sal == "":
+                sal = row[2]
+            query = "update employ set salary={} where eno={}".format(sal, no)
+            cur.execute(query)
+            con.commit()
+            print('## Data Saved ##')
+
+    elif ch == 2:
+        query = "select * from employ"
+        cur.execute(query)
+        result = cur.fetchall()
+        
+        print("%10s" % "EmpNo", "%20s" % "Emp Name", "%10s" % "Salary")
+        print('----------------------------')
+        
+        for row in result:
+            print("%10s" % row[0], "%20s" % row[1], "%10s" % row[2])
+
+    elif ch == 0:
+        con.close()
+        break
