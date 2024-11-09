@@ -1,0 +1,57 @@
+import mysql.connector as mycon
+
+con = mycon.connect(
+    host='localhost', 
+    user='root', 
+    password="sobha", 
+    database="emp"
+)
+
+if con.is_connected == False:
+    print("Not connected")
+else:
+    print("Connected to DB")
+
+ans = 'y'
+cur = con.cursor()
+
+while ans == 'y':
+    print('1. Delete Record')
+    print('2. Display Record')
+    print('0. Exit')
+    
+    ch = int(input("Enter your choice: "))
+
+    if ch == 1:
+        no = int(input("Enter emp no: "))
+        query = "SELECT * FROM employ WHERE eno = {}".format(no)
+        cur.execute(query)
+        result = cur.fetchall()
+        
+        if cur.rowcount == 0:
+            print("Record not found")
+        else:
+            query = "DELETE FROM employ WHERE eno = {}".format(no)
+            cur.execute(query)
+            con.commit()
+            print('## Data Deleted ##')
+
+    elif ch == 2:
+        query = "SELECT * FROM employ"
+        cur.execute(query)
+        result = cur.fetchall()
+        
+        print("%10s %20s %10s" % ("EmpNo", "Emp Name", "Salary"))
+        print('-' * 40)
+        
+        for row in result:
+            print("%10s %20s %10s" % (row[0], row[1], row[2]))
+
+    elif ch == 0:
+        con.close()
+        break
+
+    else:
+        print("Invalid choice. Please choose again.")
+        
+    ans = input("Do you want to continue? (y/n): ")
