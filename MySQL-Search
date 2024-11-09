@@ -1,0 +1,32 @@
+import mysql.connector as mycon
+
+con = mycon.connect(
+    host='localhost', 
+    user='root', 
+    password='sobha', 
+    database='emp'
+)
+
+if con.is_connected == False:
+    print("Not connected")
+else:
+    print("Connected to DB")
+
+print("Employee Search Form")
+n = int(input("Enter emp no to search: "))
+
+cur = con.cursor()
+query = "SELECT * FROM employ WHERE eno = {}".format(n)
+cur.execute(query)
+result = cur.fetchall()
+
+if cur.rowcount == 0:
+    print("Emp Record not found")
+else:
+    print("%10s %20s %10s" % ("EmpNo", "Emp Name", "Salary"))
+    print('-' * 40)
+    
+    for row in result:
+        print("%10s %20s %10s" % (row[0], row[1], row[2]))
+
+con.close()
