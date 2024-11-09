@@ -1,5 +1,3 @@
-
-```
 def isEmpty(s):
     if s == []:
         return True
